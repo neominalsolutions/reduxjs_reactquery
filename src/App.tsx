@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './App.css';
+import {
+	decrement,
+	increment,
+	incrementByValue,
+	reset,
+} from './contexts/counter/counter.slice';
+import type { AppDispatch, RootState } from './store';
+
+const CounterActions = () => {
+	const [number, setNumber] = useState(0);
+	const dispatch = useDispatch<AppDispatch>(); // state güncellemelerini dispatch ile yapıyoruz.
+	return (
+		<>
+			<button onClick={() => dispatch(increment())}>(+)</button>
+			<button onClick={() => dispatch(decrement())}>(-)</button>
+			<button onClick={() => dispatch(reset())}>(x)</button>
+			<hr></hr>
+			<input onInput={(e: any) => setNumber(Number(e.target.value))} />
+			<button onClick={() => dispatch(incrementByValue({ value: number }))}>
+				Increment By Value
+			</button>
+		</>
+	);
+};
+const CounterView = () => {
+	// store bağlanıp counter state component içerisinde kullanacağız.// Subscription işlemi
+	const { counterState } = useSelector((rootState: RootState) => rootState);
+	console.log('CounterView Rendering...');
+
+	return (
+		<>
+			<p>Sayac: {counterState.count}</p>
+			<CounterViewChild />
+		</>
+	);
+};
+
+const CounterViewChild = () => {
+	console.log('CounterViewChild Rendering...');
+	return <>CounterViewChild</>;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	return (
+		<>
+			<CounterActions />
+			<hr></hr>
+			<CounterView />
+		</>
+	);
 }
 
-export default App
+export default App;
