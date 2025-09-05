@@ -55,6 +55,7 @@ function App() {
 
 	useEffect(() => {
 		// Süreci aseknron olarak başlattık.
+		// asenkron api redux çağırıları useEffect içerisinde tanımlanır.
 		dispatch(fetchProducts());
 	}, []);
 
