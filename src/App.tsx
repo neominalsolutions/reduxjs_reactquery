@@ -10,6 +10,7 @@ import {
 } from './contexts/counter/counter.slice';
 import type { AppDispatch, RootState } from './store';
 import { fetchProducts } from './contexts/products/product.slice';
+import ReactQueryDemo from './reactQuery/react-query-demo';
 
 const CounterActions = () => {
 	const [number, setNumber] = useState(0);
@@ -67,6 +68,9 @@ function App() {
 			<hr></hr>
 			{productState.loading && <>.... Loading Product</>}
 			{productState.data && <ProductView data={productState.data} />}
+			<hr></hr>
+			<h1>React Query</h1>
+			<ReactQueryDemo />
 		</>
 	);
 }
