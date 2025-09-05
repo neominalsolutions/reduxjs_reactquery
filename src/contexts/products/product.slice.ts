@@ -14,14 +14,14 @@ import {
 
 // Dispatch edeceğimiz action bu olucak.
 // Veriler çekilirken THUNK middlewareden geçer ve çekilen verinin takibini yapmamızı sağlar.
-const fetchProducts = createAsyncThunk('Products', async () => {
+export const fetchProducts = createAsyncThunk('Products', async () => {
 	const response = await fetch(
 		'https://services.odata.org/northwind/northwind.svc/Products?$format=json'
 	);
 
 	const data = await response.json();
 
-	return data;
+	return data.value;
 });
 
 // Bütün asenkron veri çekme veya veri gönderim süreçleri bu statelerden geçmek zorundadır.

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import {
@@ -9,6 +9,7 @@ import {
 	reset,
 } from './contexts/counter/counter.slice';
 import type { AppDispatch, RootState } from './store';
+import { fetchProducts } from './contexts/products/product.slice';
 
 const CounterActions = () => {
 	const [number, setNumber] = useState(0);
@@ -44,12 +45,27 @@ const CounterViewChild = () => {
 	return <>CounterViewChild</>;
 };
 
+const ProductView = ({ data }: { data: any[] }) => {
+	return <>Products Count: {data.length}</>;
+};
+
 function App() {
+	const dispatch = useDispatch<AppDispatch>();
+	const { productState } = useSelector((state: RootState) => state);
+
+	useEffect(() => {
+		// Süreci aseknron olarak başlattık.
+		dispatch(fetchProducts());
+	}, []);
+
 	return (
 		<>
 			<CounterActions />
 			<hr></hr>
 			<CounterView />
+			<hr></hr>
+			{productState.loading && <>.... Loading Product</>}
+			{productState.data && <ProductView data={productState.data} />}
 		</>
 	);
 }
